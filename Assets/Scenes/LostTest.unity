@@ -121,6 +121,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &188798399 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5746340063965923309, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+    type: 3}
+  m_PrefabInstance: {fileID: 681812528}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72bfa8c6ee391420aba995aa0ad470f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &392512595
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,8 +164,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inkManager: {fileID: 1044733026}
   map: {fileID: 431635386}
-  travelerX: 0
-  travelerY: 0
+  travellerX: 0
+  travellerY: 0
 --- !u!4 &392512597
 Transform:
   m_ObjectHideFlags: 0
@@ -211,6 +223,75 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &681812528
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340063965923308, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_Name
+      value: Chat
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ef978dba55fd344659a1d6eb51f0cb9b, type: 3}
 --- !u!1 &1023956128
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,8 +445,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 437a44110d3b3464a8da57349776a9cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inkJSONAsset: {fileID: 4900000, guid: 14aae99ed5a4c46419f1d34c090b15a3, type: 3}
   gameManager: {fileID: 392512596}
+  inkJSONAsset: {fileID: 4900000, guid: 14aae99ed5a4c46419f1d34c090b15a3, type: 3}
+  chatManager: {fileID: 188798399}
   canvas: {fileID: 1023956132}
   textPrefab: {fileID: 11456674, guid: 039c34fc767a4614c86b6461b4602eec, type: 3}
   buttonPrefab: {fileID: 11455116, guid: e87c74e99f0a8f7428e42b40a993cbf0, type: 3}
