@@ -6,6 +6,8 @@
 		 _Sea("Sea",Color) = (1,1,1,1)
         _BaseColor("BaseColor",Color) = (1,1,1,1)
         _LineColor("LineColor",Color) = (1,1,1,1)
+		 _LineColor2("LineColor2",Color) = (1,1,1,1)
+		  _LineColor3("LineColor3",Color) = (1,1,1,1)
                  _HeightLineRate("HeightLineRate",Range(0,1)) = 1//The proportion of the contour line to HeightOffset
                  _HeightOffset("HeightOffset",Float) = 10//Height segment
 				 _Waterheight("sealine",Float) = 5
@@ -54,6 +56,8 @@
 			 fixed4 _Sea;
             fixed4 _BaseColor;
             fixed4 _LineColor;
+			 fixed4 _LineColor2;
+			  fixed4 _LineColor3 ;
             float _HeightOffset;
             float _HeightLineRate;
 			float _Waterheight;
@@ -71,7 +75,14 @@
                                  fixed tempRate = i.worldPos.y / _HeightOffset;//The current pixel height divided by HeightOffset
                                  fixed fract = tempRate-floor(tempRate);//Take the decimal part to get the scale value (fact is not recognized in the unity shader, so use this method)
                                  fixed funRes =1- step(fract,1 -_HeightLineRate);//Calculate whether the current height is within the ratio of U2, is it 1, not 0
-                fixed4 fincolor = col * (1-funRes) + (_LineColor*i.worldPos.y ) * funRes ;
+fixed4 fincolor;
+             
+				if (i.worldPos.y<=10)
+			{	   fincolor = col * (1-funRes) + (_LineColor) * funRes ;}
+				  else if (i.worldPos.y<=25)
+				    { fincolor = col * (1-funRes) + (_LineColor2) * funRes ;}
+					else if (i.worldPos.y>25)
+					{   fincolor = col * (1-funRes) + (_LineColor3) * funRes ;}
                 return fincolor;
             }
             ENDCG
