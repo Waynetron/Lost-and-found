@@ -1,9 +1,12 @@
-VAR tile = "none"
+VAR currentTile = "none"
+VAR aheadTile = "none"
+VAR leftTile = "none"
+VAR rightTile = "none"
 
 -> tile_description
 
 ==tile_description
-{tile_description} I'm in a {tile}.{tile == "Plain": It's very grassy here.}{tile == "River": My feet are wet.}{tile == "Lake": Maybe I can catch a fish.}{tile == "Forest": I'm worried about getting lost.}
+{tile_description} I'm in a {currentTile}. North is a {aheadTile}, west is a {leftTile} and to the east is a {rightTile}.
 + [NORTH]
 + [SOUTH]
 + [EAST]

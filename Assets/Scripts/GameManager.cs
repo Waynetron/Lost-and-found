@@ -22,8 +22,7 @@ public class GameManager : MonoBehaviour
         travelerX = Random.Range(0, map.tiles.Length);
         travelerY = Random.Range(0, map.tiles[0].Length);
 
-        Tile travelerTile = map.getTile(travelerX,travelerY);
-        inkManager.SetContext(travelerTile.tileType.ToString());
+        inkManager.SetTileContext(map, travelerX, travelerY);
         inkManager.StartStory();
     }
 
@@ -31,7 +30,6 @@ public class GameManager : MonoBehaviour
     {
         travelerX = travelerX + x;
         travelerY = travelerY + y;
-        Tile travelerTile = map.getTile(travelerX,travelerY);
-        inkManager.SetContext(travelerTile.tileType.ToString());
+        inkManager.SetTileContext(map, travelerX, travelerY);
     }
 }

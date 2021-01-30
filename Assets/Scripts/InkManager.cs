@@ -19,10 +19,17 @@ public class InkManager : MonoBehaviour
 		RemoveChildren();
         story = new Story(inkJSONAsset.text);
     }
-
-    public void SetContext(string context)
+	
+	public void SetTileContext(Map map, int x, int y)
     {
-        story.variablesState["tile"] = context;
+		Tile travellerTile = map.getTile(x,y);
+		Tile aheadTile = map.getTile(x-1,y);
+		Tile leftTile = map.getTile(x,y-1);
+		Tile rightTile = map.getTile(x,y+1);
+        story.variablesState["currentTile"] = travellerTile.tileType.ToString();
+		story.variablesState["aheadTile"] = aheadTile.tileType.ToString();
+		story.variablesState["leftTile"] = leftTile.tileType.ToString();
+		story.variablesState["rightTile"] = rightTile.tileType.ToString();
     }
 
     public void StartStory()
