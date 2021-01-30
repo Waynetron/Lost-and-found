@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Tile
 {
-    public enum type {River, Lake,Forest,Plain};
+    public enum type {River, Lake,Forest,Plain,EndTower};
 
     public type tileType;
 }

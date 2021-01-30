@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
+    [SerializeField]
     Traveller traveller;
 
     void Start() {
-        traveller = GameObject.FindGameObjectWithTag("Traveller").GetComponent<Traveller>();
+
     }
 
     void Update() {

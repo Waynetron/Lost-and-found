@@ -1,15 +1,28 @@
-VAR tile = "none"
+VAR currentTile = "none"
+VAR aheadTile = "none"
+VAR leftTile = "none"
+VAR rightTile = "none"
+
+VAR aheadPassable = true
+VAR leftPassable = true
+VAR rightPassable = true
+VAR backPassable = true
 
 -> tile_description
 
 ==tile_description
-{tile_description} I'm in a {tile}.{tile == "Plain": It's very grassy here.}{tile == "River": My feet are wet.}{tile == "Lake": Maybe I can catch a fish.}{tile == "Forest": I'm worried about getting lost.}
-+ [NORTH]
-+ [SOUTH]
-+ [EAST]
-+ [WEST]
+{currentTile=="EndTower":->endGame}
+{tile_description} I'm in a {currentTile}.{aheadPassable: North is {aheadTile}.} {leftPassable: West is a {leftTile}.}{rightPassable: To the east is a {rightTile}.}
++ {aheadPassable}[NORTH]
++ {backPassable}[SOUTH]
++ {rightPassable}[EAST]
++ {leftPassable}[WEST]
 -
 -> movement
 
 ==movement
 -> tile_description
+
+==endGame
+I've reached you!
+->END
