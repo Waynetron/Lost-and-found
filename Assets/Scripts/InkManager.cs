@@ -79,7 +79,7 @@ public class InkManager : MonoBehaviour
         while (story.canContinue) {
 			// Get the next line of the story
 			string text = story.Continue ();
-            chatManager.AddDialogue(text.Trim(), Character.Player);
+            chatManager.AddDialogue(text.Trim(), Character.Traveller);
         }
 
         // Display all the choices, if there are any!
@@ -97,6 +97,7 @@ public class InkManager : MonoBehaviour
 
     // When we click the choice button, tell the story to choose that choice!
     void OnClickChoiceButton(Choice choice) {
+        chatManager.AddDialogue(choice.text.Trim(), Character.Player);
         ProcessMove(choice.text);
 		story.ChooseChoiceIndex (choice.index);
 		RefreshView();
