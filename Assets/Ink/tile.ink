@@ -3,14 +3,19 @@ VAR aheadTile = "none"
 VAR leftTile = "none"
 VAR rightTile = "none"
 
+VAR aheadPassable = true
+VAR leftPassable = true
+VAR rightPassable = true
+VAR backPassable = true
+
 -> tile_description
 
 ==tile_description
-{tile_description} I'm in a {currentTile}. North is a {aheadTile}, west is a {leftTile} and to the east is a {rightTile}.
-+ [NORTH]
-+ [SOUTH]
-+ [EAST]
-+ [WEST]
+{tile_description} I'm in a {currentTile}.{aheadPassable: North is {aheadTile}.} {leftPassable: West is a {leftTile}.}{rightPassable: To the east is a {rightTile}.}
++ {aheadPassable}[NORTH]
++ {backPassable}[SOUTH]
++ {rightPassable}[EAST]
++ {leftPassable}[WEST]
 -
 -> movement
 

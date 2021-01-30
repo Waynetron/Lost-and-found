@@ -23,13 +23,41 @@ public class InkManager : MonoBehaviour
 	public void SetTileContext(Map map, int x, int y)
     {
 		Tile travellerTile = map.getTile(x,y);
-		Tile aheadTile = map.getTile(x-1,y);
-		Tile leftTile = map.getTile(x,y-1);
-		Tile rightTile = map.getTile(x,y+1);
+		if(map.IsInMap(x, y - 1))
+		{
+			Tile aheadTile = map.getTile(x,y - 1);
+			story.variablesState["aheadTile"] = aheadTile.tileType.ToString();
+			story.variablesState["aheadPassable"] = true;
+		}
+		else
+		{
+			story.variablesState["aheadPassable"] = false;
+		}
+		if(map.IsInMap(x - 1, y))
+		{
+			Tile leftTile = map.getTile(x - 1,y);
+			story.variablesState["leftTile"] = leftTile.tileType.ToString();
+			story.variablesState["leftPassable"] = true;
+		}
+		else
+		{
+			story.variablesState["leftPassable"] = false;
+		}
+		if(map.IsInMap(x + 1, y))
+		{
+			Tile rightTile = map.getTile(x + 1,y);
+			story.variablesState["rightTile"] = rightTile.tileType.ToString();
+			story.variablesState["rightPassable"] = true;
+		}
+		else
+		{
+			story.variablesState["rightPassable"] = false;
+		}
+		if(map.IsInMap(x, y + 1))
+			story.variablesState["backPassable"] = true;
+		else
+			story.variablesState["backPassable"] = false;
         story.variablesState["currentTile"] = travellerTile.tileType.ToString();
-		story.variablesState["aheadTile"] = aheadTile.tileType.ToString();
-		story.variablesState["leftTile"] = leftTile.tileType.ToString();
-		story.variablesState["rightTile"] = rightTile.tileType.ToString();
     }
 
     public void StartStory()

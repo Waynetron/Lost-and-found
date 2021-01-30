@@ -38,4 +38,11 @@ public class Map : MonoBehaviour
         return tiles[x][y];
     }
 
+    public bool IsInMap(int x, int y)
+    {
+        if(x < 0 || y < 0 || x >= tiles.Length || y >= tiles[0].Length)
+            return false;
+        else
+            return true;
+    }
 }
