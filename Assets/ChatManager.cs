@@ -16,31 +16,6 @@ public class ChatManager : MonoBehaviour {
     public Button whiteButton;
     List<Button> choiceButtons = new List<Button>();
     List<GameObject> dialogueEntries = new List<GameObject>();
-    float BUTTON_SPACING = 0.2f;
-
-    void Start() {
-        AddChoice("North", () => { });
-        AddChoice("South", () => { });
-        AddChoice("East", () => { });
-        AddChoice("West", () => { });
-
-        AddDialogue("Hello?", Character.Player);
-        AddDialogue("On, you're alive!", Character.Traveller);
-        AddDialogue("Yep, still breathing. Where are you? ", Character.Player);
-        AddDialogue("I’ve no idea... I just woke up here.", Character.Traveller);
-        AddDialogue("Can you check what's up ahead. I have a feeling in my bones. Greeeease lighting!", Character.Player);
-        AddDialogue("On, you're alive!", Character.Traveller);
-        AddDialogue("Yep, still breathing. Where are you? ", Character.Player);
-        AddDialogue("I’ve no idea... I just woke up here.", Character.Traveller);
-        AddDialogue("Hello?", Character.Player);
-        AddDialogue("On, you're alive!", Character.Traveller);
-        AddDialogue("Yep, still breathing. Where are you? ", Character.Player);
-        AddDialogue("I’ve no idea... I just woke up here.", Character.Traveller);
-        AddDialogue("Hello?", Character.Player);
-        AddDialogue("On, you're alive!", Character.Traveller);
-        AddDialogue("Yep, still breathing. Where are you? ", Character.Player);
-        AddDialogue("I’ve no idea... I just woke up here.", Character.Traveller);
-    }
 
     Button CreateChoice(string text, Action OnSelect) {
         Button button = Instantiate(whiteButton);
@@ -59,9 +34,9 @@ public class ChatManager : MonoBehaviour {
         return button;
     }
 
-    void ClearChoices() {
+    public void ClearChoices() {
         foreach (Button button in choiceButtons) {
-            Destroy(button);
+            Destroy(button.gameObject);
         }
         choiceButtons.Clear();
     }
@@ -79,10 +54,9 @@ public class ChatManager : MonoBehaviour {
 
     public void AddDialogue(String text, Character character) {
         if (dialogueEntries.Count > 9) {
-            int lastIndex = dialogueEntries.Count - 1;
-            GameObject oldest = dialogueEntries[lastIndex];
+            GameObject oldest = dialogueEntries[0];
             Destroy(oldest);
-            dialogueEntries.RemoveAt(lastIndex);
+            dialogueEntries.RemoveAt(0);
         }
 
         dialogueEntries.Add(CreateDialogue(text, character));
