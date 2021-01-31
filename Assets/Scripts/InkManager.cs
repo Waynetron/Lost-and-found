@@ -8,7 +8,7 @@ public class InkManager : MonoBehaviour {
     GameManager gameManager;
 
     [SerializeField]
-	private TextAsset inkJSONAsset = null;
+	private TextAsset tileJSON;
     
     [SerializeField]
     private ChatManager chatManager;
@@ -22,7 +22,7 @@ public class InkManager : MonoBehaviour {
     Story story;
 
     void Awake() {
-        story = new Story(inkJSONAsset.text);
+        story = new Story(tileJSON.text);
     }
 
     public void UpdateStoryAtCurrentPosition() {
@@ -75,42 +75,46 @@ public class InkManager : MonoBehaviour {
     }
 
     public void StartStory() {
-        RefreshView();
+        StartCoroutine(ContinueStory(0));
     }
-	
-	// This is the main function called every time the story changes. It does a few things:
-	// Clears previous choices.
-	// Continues over all the lines of text, then displays all the choices. If there are no choices, the story is finished!
-	void RefreshView () {
-        chatManager.ClearChoices();
 
-        // Read all the content until we can't continue any more
-        while (story.canContinue) {
-			// Get the next line of the story
-			string text = story.Continue ();
+    IEnumerator ContinueStory(float delay) {
+        yield return new WaitForSecondsRealtime(0.25f);
+
+        if (story.canContinue) {
+            string text = story.Continue();
             chatManager.AddDialogue(text.Trim(), Character.Traveller);
-        }
 
-        // Display all the choices, if there are any!
+            // recursively continue the story until all dialogue has been displayed
+            StartCoroutine(ContinueStory(0.25f));
+        }
+        else if (HasWon()) {
+            Debug.Log("Story Finished");
+        } else {
+            DisplayChoices();
+        }
+    }
+
+    bool HasWon() {
+        return story.currentChoices.Count == 0;
+    }
+
+    void DisplayChoices() {
         foreach (Choice choice in story.currentChoices) {
             chatManager.AddChoice(choice.text.Trim(), () => {
                 OnClickChoiceButton(choice);
             });
         }
-
-        // If we've read all the content and there's no choices, the story is finished!
-        if (story.currentChoices.Count == 0) {
-            Debug.Log("Story Finished");
-        }
-	}
+    }
 
     // When we click the choice button, tell the story to choose that choice!
     void OnClickChoiceButton(Choice choice) {
+        chatManager.ClearChoices();
         chatManager.ClearDialogue();
         chatManager.AddDialogue(choice.text.Trim(), Character.Player);
         ProcessMove(TextToDirection(choice.text, traveller.direction));
 		story.ChooseChoiceIndex (choice.index);
-		RefreshView();
+        StartCoroutine(ContinueStory(0.25f));
     }
 
     Vector2Int TextToDirection(string text, Vector2Int currentDirection) {
