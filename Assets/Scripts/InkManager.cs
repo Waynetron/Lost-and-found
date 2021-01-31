@@ -1,29 +1,31 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Ink.Runtime;
 
-public class InkManager : MonoBehaviour
-{
+public class InkManager : MonoBehaviour {
     [SerializeField]
     GameManager gameManager;
 
     [SerializeField]
 	private TextAsset inkJSONAsset = null;
-    Story story;
+    
     [SerializeField]
     private ChatManager chatManager;
+    
+    [SerializeField]
+    private Map map;
+    
+    [SerializeField]
+    private Traveller traveller;
 
-    void Awake()
-    {
-        // Remove the default message
-		RemoveChildren();
+    Story story;
+
+    void Awake() {
         story = new Story(inkJSONAsset.text);
     }
 	
-	public void SetTileContext(Map map, int x, int y)
-    {
+	public void SetTileContext(int x, int y) {
 		UnityEngine.Tilemaps.TileBase travellerTile = map.getTile(x,y);
 		if(map.IsInMap(x, y + 1))
 		{
@@ -66,17 +68,14 @@ public class InkManager : MonoBehaviour
         story.variablesState["currentTile"] = travellerTile.name;
     }
 
-    public void StartStory()
-    {
+    public void StartStory() {
         RefreshView();
     }
 	
 	// This is the main function called every time the story changes. It does a few things:
-	// Destroys all the old content and choices.
+	// Clears previous choices.
 	// Continues over all the lines of text, then displays all the choices. If there are no choices, the story is finished!
 	void RefreshView () {
-        // Remove all the UI on screen
-        RemoveChildren();
         chatManager.ClearChoices();
 
         // Read all the content until we can't continue any more
@@ -102,64 +101,29 @@ public class InkManager : MonoBehaviour
     // When we click the choice button, tell the story to choose that choice!
     void OnClickChoiceButton(Choice choice) {
         chatManager.AddDialogue(choice.text.Trim(), Character.Player);
-        ProcessMove(choice.text);
+        ProcessMove(TextToDirection(choice.text, traveller.direction));
 		story.ChooseChoiceIndex (choice.index);
 		RefreshView();
-	}
-
-    public void ProcessMove(string move)
-    {
-        int xChange = 0;
-        int yChange = 0;
-        switch(move)
-        {
-            case "NORTH":
-            yChange = 1;
-            break;
-            case "SOUTH":
-            yChange = -1;
-            break;
-            case "EAST":
-            xChange = 1;
-            break;
-            case "WEST":
-            xChange = -1;
-            break;
-        }
-        gameManager.Move(xChange,yChange);
     }
 
-	// Creates a button showing the choice text
-	Button CreateChoiceView (string text) {
-		// Creates the button from a prefab
-		Button choice = Instantiate (buttonPrefab) as Button;
-		choice.transform.SetParent (canvas.transform, false);
-		
-		// Gets the text from the button prefab
-		Text choiceText = choice.GetComponentInChildren<Text> ();
-		choiceText.text = text;
+    Vector2Int TextToDirection(string text, Vector2Int currentDirection) {
+        Vector2 direction = new Vector2(currentDirection.x, currentDirection.y);
 
-		// Make the button expand to fit the text
-		HorizontalLayoutGroup layoutGroup = choice.GetComponent <HorizontalLayoutGroup> ();
-		layoutGroup.childForceExpandHeight = false;
+        if (text == "forward") {
+            return currentDirection;
+        } else if (text == "back") {
+            return -currentDirection;
+        } else if (text == "left") {
+            Vector2 left = Vector2.Perpendicular(currentDirection);
+            return new Vector2Int((int) left.x, (int) left.y);
+        }
 
-		return choice;
-	}
+        Vector2 right = -Vector2.Perpendicular(currentDirection);
+        return new Vector2Int((int) right.x, (int) right.y);
+    }
 
-	// Destroys all the children of this gameobject (all the UI)
-	void RemoveChildren () {
-		int childCount = canvas.transform.childCount;
-		for (int i = childCount - 1; i >= 0; --i) {
-			GameObject.Destroy (canvas.transform.GetChild (i).gameObject);
-		}
-	}
-
-	[SerializeField]
-	private Canvas canvas = null;
-
-	// UI Prefabs
-	[SerializeField]
-	private Text textPrefab = null;
-	[SerializeField]
-	private Button buttonPrefab = null;
+    public void ProcessMove(Vector2Int direction) {
+        traveller.Move(direction);
+        SetTileContext(traveller.GetPosition().x, traveller.GetPosition().y);
+    }
 }

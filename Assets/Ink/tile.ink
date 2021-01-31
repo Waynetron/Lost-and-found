@@ -13,11 +13,11 @@ VAR backPassable = true
 
 ==tile_description
 {currentTile=="Goal":->endGame}
-{tile_description} I'm in a {currentTile}.{aheadPassable: North is {aheadTile}.} {leftPassable: West is a {leftTile}.}{rightPassable: To the east is a {rightTile}.}{backPassable: South is a {backTile}.}
-+ {aheadPassable}[NORTH]
-+ {backPassable}[SOUTH]
-+ {rightPassable}[EAST]
-+ {leftPassable}[WEST]
+{tile_description} I'm in a {currentTile}.{aheadPassable: Ahead is {aheadTile}.} {leftPassable: To me left is a {leftTile}.}{rightPassable: To my right is a {rightTile}.}{backPassable: Behind me is a {backTile}.}
++ {aheadPassable}[forward]
++ {backPassable}[back]
++ {rightPassable}[right]
++ {leftPassable}[left]
 -
 -> movement
 
