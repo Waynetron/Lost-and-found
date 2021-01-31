@@ -86,11 +86,11 @@
 fixed4 fincolor;
              
 				if (i.worldPos.y<=10)
-			{	   fincolor = col * (1-funRes) + (_LineColor) * funRes ;}
+			{	   fincolor = col * (1-funRes) + (_LineColor3) * funRes ;}
 				  else if (i.worldPos.y<=25)
-				    { fincolor = col * (1-funRes) + (_LineColor) * funRes ;}
+				    { fincolor = col * (1-funRes) + (_LineColor3) * funRes ;}
 					else if (i.worldPos.y>25)
-					{   fincolor = col * (1-funRes) + (_LineColor) * funRes ;}
+					{   fincolor = col * (1-funRes) + (_LineColor3) * funRes ;}
                 return fincolor;
             }
             ENDCG
