@@ -38,7 +38,7 @@ public class InkManager : MonoBehaviour {
                 traveller.RandomizeDirection();
         }
 
-        Vector2 leftVector = Vector2.Perpendicular(traveller.direction);
+        Vector2 leftVector = -Vector2.Perpendicular(traveller.direction);
         Vector2Int leftVectorInt = new Vector2Int((int) leftVector.x, (int) leftVector.y);
         Vector2Int left = tileMapPosition + leftVectorInt;
 
@@ -138,11 +138,11 @@ public class InkManager : MonoBehaviour {
         } else if (text == "back") {
             return -currentDirection;
         } else if (text == "left") {
-            Vector2 left = Vector2.Perpendicular(currentDirection);
+            Vector2 left = -Vector2.Perpendicular(currentDirection);
             return new Vector2Int((int) left.x, (int) left.y);
         }
 
-        Vector2 right = -Vector2.Perpendicular(currentDirection);
+        Vector2 right = Vector2.Perpendicular(currentDirection);
         return new Vector2Int((int) right.x, (int) right.y);
     }
 
