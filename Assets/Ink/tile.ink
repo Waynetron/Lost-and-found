@@ -8,6 +8,7 @@ VAR aheadPassable = true
 VAR leftPassable = true
 VAR rightPassable = true
 VAR backPassable = true
+VAR badWeather = true
 
 -> tile_description
 
