@@ -29,7 +29,7 @@ public class InkManager : MonoBehaviour
 		{
 			UnityEngine.Tilemaps.TileBase aheadTile = map.getTile(x,y + 1);
 			story.variablesState["aheadTile"] = aheadTile.name;
-			story.variablesState["aheadPassable"] = true;
+			story.variablesState["aheadPassable"] = map.IsPassable(aheadTile);
 		}
 		else
 		{
@@ -39,7 +39,7 @@ public class InkManager : MonoBehaviour
 		{
 			UnityEngine.Tilemaps.TileBase leftTile = map.getTile(x - 1,y);
 			story.variablesState["leftTile"] = leftTile.name;
-			story.variablesState["leftPassable"] = true;
+			story.variablesState["leftPassable"] = map.IsPassable(leftTile);
 		}
 		else
 		{
@@ -49,7 +49,7 @@ public class InkManager : MonoBehaviour
 		{
 			UnityEngine.Tilemaps.TileBase rightTile = map.getTile(x + 1,y);
 			story.variablesState["rightTile"] = rightTile.name;
-			story.variablesState["rightPassable"] = true;
+			story.variablesState["rightPassable"] =  map.IsPassable(rightTile);
 		}
 		else
 		{
@@ -59,7 +59,7 @@ public class InkManager : MonoBehaviour
 		{
 			UnityEngine.Tilemaps.TileBase backTile = map.getTile(x,y - 1);
 			story.variablesState["backTile"] = backTile.name;
-			story.variablesState["backPassable"] = true;
+			story.variablesState["backPassable"] =  map.IsPassable(backTile);
 		}
 		else
 			story.variablesState["backPassable"] = false;

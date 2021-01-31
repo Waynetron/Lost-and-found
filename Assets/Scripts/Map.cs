@@ -39,6 +39,18 @@ public class Map : MonoBehaviour
             return true;
     }
 
+    public bool IsPassable(UnityEngine.Tilemaps.TileBase tile)
+    {
+        if(tile.name == "Mountain" || tile.name == "Lake")
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     void Update()
     {
         
