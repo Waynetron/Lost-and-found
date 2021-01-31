@@ -1,8 +1,8 @@
 VAR currentTile = "none"
-VAR aheadTile = "none"
-VAR backTile = "none"
-VAR leftTile = "none"
-VAR rightTile = "none"
+VAR aheadTile = 0
+VAR backTile = 0
+VAR leftTile = 0
+VAR rightTile = 0
 
 VAR aheadPassable = true
 VAR leftPassable = true
