@@ -9,7 +9,7 @@ public class Traveller : MonoBehaviour {
     Tilemap tilemap;
 
     [SerializeField]
-    Vector3Int tileMapPosition;
+    Vector2Int tileMapPosition;
 
     public Vector2Int direction;
     public bool canSeeAdjacent = true;
@@ -54,13 +54,13 @@ public class Traveller : MonoBehaviour {
     }
 
     private void UpdateDisplayPosition() {
-        Vector3 displayPosition = tilemap.CellToWorld(tileMapPosition);
+        Vector3 displayPosition = tilemap.CellToWorld(new Vector3Int(tileMapPosition.x, tileMapPosition.y, 0));
         displayPosition.x += 0.5f;
         displayPosition.y += 0.5f;
         transform.position = displayPosition;
     }
 
-    public Vector3Int GetPosition() {
+    public Vector2Int GetTileMapPosition() {
         return tileMapPosition;
     }
 }

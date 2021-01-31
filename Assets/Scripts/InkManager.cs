@@ -24,47 +24,53 @@ public class InkManager : MonoBehaviour {
     void Awake() {
         story = new Story(inkJSONAsset.text);
     }
-	
-	public void SetTileContext(int x, int y) {
-		UnityEngine.Tilemaps.TileBase travellerTile = map.getTile(x,y);
-		if(map.IsInMap(x, y + 1))
-		{
-			UnityEngine.Tilemaps.TileBase aheadTile = map.getTile(x,y + 1);
+
+    public void UpdateStoryAtCurrentPosition() {
+        Vector2Int tileMapPosition = traveller.GetTileMapPosition();
+        Vector2Int ahead = tileMapPosition + traveller.direction;
+        Vector2Int behind = tileMapPosition - traveller.direction;
+
+        Vector2 leftVector = Vector2.Perpendicular(traveller.direction);
+        Vector2Int leftVectorInt = new Vector2Int((int) leftVector.x, (int) leftVector.y);
+        Vector2Int left = tileMapPosition + leftVectorInt;
+
+        Vector2Int rightVectorInt = -leftVectorInt;
+        Vector2Int right = tileMapPosition + rightVectorInt;
+
+		if(map.IsInMap(ahead)) {
+			UnityEngine.Tilemaps.TileBase aheadTile = map.getTile(ahead.x, ahead.y);
 			story.variablesState["aheadTile"] = aheadTile.name;
 			story.variablesState["aheadPassable"] = map.IsPassable(aheadTile);
-		}
-		else
-		{
+		} else {
 			story.variablesState["aheadPassable"] = false;
-		}
-		if(map.IsInMap(x - 1, y))
-		{
-			UnityEngine.Tilemaps.TileBase leftTile = map.getTile(x - 1,y);
+        }
+        
+		if(map.IsInMap(left)) {
+			UnityEngine.Tilemaps.TileBase leftTile = map.getTile(left.x, left.y);
 			story.variablesState["leftTile"] = leftTile.name;
 			story.variablesState["leftPassable"] = map.IsPassable(leftTile);
-		}
-		else
+		} else
 		{
 			story.variablesState["leftPassable"] = false;
-		}
-		if(map.IsInMap(x + 1, y))
-		{
-			UnityEngine.Tilemaps.TileBase rightTile = map.getTile(x + 1,y);
+        }
+        
+		if(map.IsInMap(right)) {
+			UnityEngine.Tilemaps.TileBase rightTile = map.getTile(right.x, right.y);
 			story.variablesState["rightTile"] = rightTile.name;
 			story.variablesState["rightPassable"] =  map.IsPassable(rightTile);
-		}
-		else
-		{
+		} else {
 			story.variablesState["rightPassable"] = false;
-		}
-		if(map.IsInMap(x, y - 1))
-		{
-			UnityEngine.Tilemaps.TileBase backTile = map.getTile(x,y - 1);
+        }
+        
+		if(map.IsInMap(behind)) {
+			UnityEngine.Tilemaps.TileBase backTile = map.getTile(behind.x, behind.y);
 			story.variablesState["backTile"] = backTile.name;
 			story.variablesState["backPassable"] =  map.IsPassable(backTile);
-		}
-		else
-			story.variablesState["backPassable"] = false;
+		} else {
+            story.variablesState["backPassable"] = false;
+        }
+
+        UnityEngine.Tilemaps.TileBase travellerTile = map.getTile(tileMapPosition.x, tileMapPosition.y);
         story.variablesState["currentTile"] = travellerTile.name;
     }
 
@@ -124,6 +130,6 @@ public class InkManager : MonoBehaviour {
 
     public void ProcessMove(Vector2Int direction) {
         traveller.Move(direction);
-        SetTileContext(traveller.GetPosition().x, traveller.GetPosition().y);
+        UpdateStoryAtCurrentPosition();
     }
 }

@@ -31,9 +31,9 @@ public class Map : MonoBehaviour
         return tilemap.GetTile(new Vector3Int(x,y,0));
     }
 
-    public bool IsInMap(int x, int y)
+    public bool IsInMap(Vector2Int position)
     {
-        if(x < 0 || y < 0 || x >= tilemap.cellBounds.max.x || y >= tilemap.cellBounds.max.y)
+        if(position.x < 0 || position.y < 0 || position.x >= tilemap.cellBounds.max.x || position.y >= tilemap.cellBounds.max.y)
             return false;
         else
             return true;
