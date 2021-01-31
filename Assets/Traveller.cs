@@ -9,49 +9,58 @@ public class Traveller : MonoBehaviour {
     Tilemap tilemap;
 
     [SerializeField]
-    Vector3Int tileMapPosition;
+    Vector2Int tileMapPosition;
 
-    public Vector3 direction;
+    public Vector2Int direction;
     public bool canSeeAdjacent = true;
-    List<Vector3> cardinalDirections = new List<Vector3>() {
-        Vector3.forward,
-        Vector3.back,
-        Vector3.left,
-        Vector3.right
+    List<Vector2Int> cardinalDirections = new List<Vector2Int>() {
+        Vector2Int.up,
+        Vector2Int.down,
+        Vector2Int.left,
+        Vector2Int.right
     };
 
     void Start() {
         RandomizeDirection();
     }
 
+    void UpdateGameObjectRotation() {
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
+        transform.rotation = Quaternion.Euler(
+            transform.rotation.x,
+            transform.rotation.y,
+            angle
+        );
+    }
+
     public void RandomizeDirection() {
         int randomIndex = Random.Range(0, cardinalDirections.Count - 1);
         direction = cardinalDirections[randomIndex];
+        UpdateGameObjectRotation();
     }
 
-    public void Move(int x, int y) {
-        tileMapPosition.x = tileMapPosition.x + x;
-        tileMapPosition.y = tileMapPosition.y + y;
+    public void Move(Vector2Int newDirection) {
+        direction = newDirection;
+        tileMapPosition.x = tileMapPosition.x + newDirection.x;
+        tileMapPosition.y = tileMapPosition.y + newDirection.y;
         UpdateDisplayPosition();
+        UpdateGameObjectRotation();
     }
 
-    public void SetPosition(int x, int y)
-    {
+    public void SetPosition(int x, int y) {
         tileMapPosition.x = x;
         tileMapPosition.y = y;
         UpdateDisplayPosition();
     }
 
-    private void UpdateDisplayPosition()
-    {
-        Vector3 displayPosition = tilemap.CellToWorld(tileMapPosition);
+    private void UpdateDisplayPosition() {
+        Vector3 displayPosition = tilemap.CellToWorld(new Vector3Int(tileMapPosition.x, tileMapPosition.y, 0));
         displayPosition.x += 0.5f;
         displayPosition.y += 0.5f;
         transform.position = displayPosition;
     }
 
-    public Vector3Int GetPosition()
-    {
+    public Vector2Int GetTileMapPosition() {
         return tileMapPosition;
     }
 }

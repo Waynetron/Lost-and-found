@@ -11,7 +11,8 @@
                  _HeightLineRate("HeightLineRate",Range(0,1)) = 1//The proportion of the contour line to HeightOffset
                  _HeightOffset("HeightOffset",Float) = 10//Height segment
 				 _Waterheight("sealine",Float) = 5
-				 
+				 _MountainHeight("MountainHeight",Float) = 5
+				 _FlatLandHeight("FlatLandHeight",Float) = 5
      
 
     }
@@ -59,6 +60,8 @@
 			 fixed4 _LineColor2;
 			  fixed4 _LineColor3 ;
             float _HeightOffset;
+			float _MountainHeight;
+			float _FlatLandHeight;
             float _HeightLineRate;
 			float _Waterheight;
             fixed4 frag (v2f i) : SV_Target
@@ -67,6 +70,11 @@
 				fixed4 col;
 				if (i.worldPos.y<_Waterheight){
                 col = tex2D(_MainTex, i.uv) *_Sea  ;
+				}
+				else if (i.worldPos.y<_FlatLandHeight){
+				col = tex2D(_MainTex, i.uv) *_LineColor  ;}
+				else if (i.worldPos.y<_MountainHeight){
+				col = tex2D(_MainTex, i.uv) *_LineColor2  ;
 				}
 				else
 				{
@@ -78,9 +86,9 @@
 fixed4 fincolor;
              
 				if (i.worldPos.y<=10)
-			{	   fincolor = col * (1-funRes) + (_LineColor) * funRes ;}
+			{	   fincolor = col * (1-funRes) + (_LineColor3) * funRes ;}
 				  else if (i.worldPos.y<=25)
-				    { fincolor = col * (1-funRes) + (_LineColor2) * funRes ;}
+				    { fincolor = col * (1-funRes) + (_LineColor3) * funRes ;}
 					else if (i.worldPos.y>25)
 					{   fincolor = col * (1-funRes) + (_LineColor3) * funRes ;}
                 return fincolor;

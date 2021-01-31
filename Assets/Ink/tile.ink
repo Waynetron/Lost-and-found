@@ -8,16 +8,17 @@ VAR aheadPassable = true
 VAR leftPassable = true
 VAR rightPassable = true
 VAR backPassable = true
+VAR badWeather = true
 
 -> tile_description
 
 ==tile_description
 {currentTile=="Goal":->endGame}
-{tile_description} I'm in a {currentTile}.{aheadTile: North is {aheadTile}.} {leftTile: West is a {leftTile}.}{rightTile: To the east is a {rightTile}.}{backTile: South is a {backTile}.}
-+ {aheadPassable}[NORTH]
-+ {backPassable}[SOUTH]
-+ {rightPassable}[EAST]
-+ {leftPassable}[WEST]
+{tile_description} I'm in a {currentTile}.{aheadPassable: Ahead is {aheadTile}.} {leftPassable: To me left is a {leftTile}.}{rightPassable: To my right is a {rightTile}.}{backPassable: Behind me is a {backTile}.}
++ {aheadPassable}[forward]
++ {backPassable}[back]
++ {rightPassable}[right]
++ {leftPassable}[left]
 -
 -> movement
 

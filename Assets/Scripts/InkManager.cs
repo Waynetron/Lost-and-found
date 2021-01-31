@@ -1,165 +1,150 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Ink.Runtime;
 
-public class InkManager : MonoBehaviour
-{
+public class InkManager : MonoBehaviour {
     [SerializeField]
     GameManager gameManager;
 
     [SerializeField]
-	private TextAsset inkJSONAsset = null;
-    Story story;
+	private TextAsset tileJSON;
+    
     [SerializeField]
     private ChatManager chatManager;
+    
+    [SerializeField]
+    private Map map;
+    
+    [SerializeField]
+    private Traveller traveller;
 
-    void Awake()
-    {
-        // Remove the default message
-		RemoveChildren();
-        story = new Story(inkJSONAsset.text);
+    Story story;
+    public bool badWeather = false;
+
+    void Awake() {
+        story = new Story(tileJSON.text);
     }
-	
-	public void SetTileContext(Map map, int x, int y)
-    {
-		UnityEngine.Tilemaps.TileBase travellerTile = map.getTile(x,y);
-		if(map.IsInMap(x, y + 1))
-		{
-			UnityEngine.Tilemaps.TileBase aheadTile = map.getTile(x,y + 1);
+
+    public void UpdateStoryAtCurrentPosition() {
+        Vector2Int tileMapPosition = traveller.GetTileMapPosition();
+        Vector2Int ahead = tileMapPosition + traveller.direction;
+        Vector2Int behind = tileMapPosition - traveller.direction;
+
+        Vector2 leftVector = Vector2.Perpendicular(traveller.direction);
+        Vector2Int leftVectorInt = new Vector2Int((int) leftVector.x, (int) leftVector.y);
+        Vector2Int left = tileMapPosition + leftVectorInt;
+
+        Vector2Int rightVectorInt = -leftVectorInt;
+        Vector2Int right = tileMapPosition + rightVectorInt;
+
+       
+
+		if(map.IsInMap(ahead)) {
+			UnityEngine.Tilemaps.TileBase aheadTile = map.getTile(ahead.x, ahead.y);
 			story.variablesState["aheadTile"] = aheadTile.name;
 			story.variablesState["aheadPassable"] = map.IsPassable(aheadTile);
-		}
-		else
-		{
+		} else {
 			story.variablesState["aheadPassable"] = false;
-		}
-		if(map.IsInMap(x - 1, y))
-		{
-			UnityEngine.Tilemaps.TileBase leftTile = map.getTile(x - 1,y);
+        }
+        
+		if(map.IsInMap(left)) {
+			UnityEngine.Tilemaps.TileBase leftTile = map.getTile(left.x, left.y);
 			story.variablesState["leftTile"] = leftTile.name;
 			story.variablesState["leftPassable"] = map.IsPassable(leftTile);
-		}
-		else
+		} else
 		{
 			story.variablesState["leftPassable"] = false;
-		}
-		if(map.IsInMap(x + 1, y))
-		{
-			UnityEngine.Tilemaps.TileBase rightTile = map.getTile(x + 1,y);
+        }
+        
+		if(map.IsInMap(right)) {
+			UnityEngine.Tilemaps.TileBase rightTile = map.getTile(right.x, right.y);
 			story.variablesState["rightTile"] = rightTile.name;
 			story.variablesState["rightPassable"] =  map.IsPassable(rightTile);
-		}
-		else
-		{
+		} else {
 			story.variablesState["rightPassable"] = false;
-		}
-		if(map.IsInMap(x, y - 1))
-		{
-			UnityEngine.Tilemaps.TileBase backTile = map.getTile(x,y - 1);
+        }
+        
+		if(map.IsInMap(behind)) {
+			UnityEngine.Tilemaps.TileBase backTile = map.getTile(behind.x, behind.y);
 			story.variablesState["backTile"] = backTile.name;
 			story.variablesState["backPassable"] =  map.IsPassable(backTile);
-		}
-		else
-			story.variablesState["backPassable"] = false;
+		} else {
+            story.variablesState["backPassable"] = false;
+        }
+
+        if (map.getTile(tileMapPosition.x, tileMapPosition.y).name == "Forest")
+        {
+            if (Random.Range(0,4)==1)
+                traveller.RandomizeDirection();
+        }
+        story.variablesState["badWeather"] = badWeather;
+
+        UnityEngine.Tilemaps.TileBase travellerTile = map.getTile(tileMapPosition.x, tileMapPosition.y);
         story.variablesState["currentTile"] = travellerTile.name;
     }
 
-    public void StartStory()
-    {
-        RefreshView();
+    public void StartStory() {
+        StartCoroutine(ContinueStory(0));
     }
-	
-	// This is the main function called every time the story changes. It does a few things:
-	// Destroys all the old content and choices.
-	// Continues over all the lines of text, then displays all the choices. If there are no choices, the story is finished!
-	void RefreshView () {
-        // Remove all the UI on screen
-        RemoveChildren();
-        chatManager.ClearChoices();
 
-        // Read all the content until we can't continue any more
-        while (story.canContinue) {
-			// Get the next line of the story
-			string text = story.Continue ();
+    IEnumerator ContinueStory(float delay) {
+        yield return new WaitForSecondsRealtime(0.25f);
+
+        if (story.canContinue) {
+            string text = story.Continue();
             chatManager.AddDialogue(text.Trim(), Character.Traveller);
-        }
 
-        // Display all the choices, if there are any!
+            // recursively continue the story until all dialogue has been displayed
+            StartCoroutine(ContinueStory(0.25f));
+        }
+        else if (HasWon()) {
+            Debug.Log("Story Finished");
+        } else {
+            DisplayChoices();
+        }
+    }
+
+    bool HasWon() {
+        return story.currentChoices.Count == 0;
+    }
+
+    void DisplayChoices() {
         foreach (Choice choice in story.currentChoices) {
             chatManager.AddChoice(choice.text.Trim(), () => {
                 OnClickChoiceButton(choice);
             });
         }
-
-        // If we've read all the content and there's no choices, the story is finished!
-        if (story.currentChoices.Count == 0) {
-            Debug.Log("Story Finished");
-        }
-	}
+    }
 
     // When we click the choice button, tell the story to choose that choice!
     void OnClickChoiceButton(Choice choice) {
+        chatManager.ClearChoices();
+        chatManager.ClearDialogue();
         chatManager.AddDialogue(choice.text.Trim(), Character.Player);
-        ProcessMove(choice.text);
+        ProcessMove(TextToDirection(choice.text, traveller.direction));
 		story.ChooseChoiceIndex (choice.index);
-		RefreshView();
-	}
-
-    public void ProcessMove(string move)
-    {
-        int xChange = 0;
-        int yChange = 0;
-        switch(move)
-        {
-            case "NORTH":
-            yChange = 1;
-            break;
-            case "SOUTH":
-            yChange = -1;
-            break;
-            case "EAST":
-            xChange = 1;
-            break;
-            case "WEST":
-            xChange = -1;
-            break;
-        }
-        gameManager.Move(xChange,yChange);
+        StartCoroutine(ContinueStory(0.25f));
     }
 
-	// Creates a button showing the choice text
-	Button CreateChoiceView (string text) {
-		// Creates the button from a prefab
-		Button choice = Instantiate (buttonPrefab) as Button;
-		choice.transform.SetParent (canvas.transform, false);
-		
-		// Gets the text from the button prefab
-		Text choiceText = choice.GetComponentInChildren<Text> ();
-		choiceText.text = text;
+    Vector2Int TextToDirection(string text, Vector2Int currentDirection) {
+        Vector2 direction = new Vector2(currentDirection.x, currentDirection.y);
 
-		// Make the button expand to fit the text
-		HorizontalLayoutGroup layoutGroup = choice.GetComponent <HorizontalLayoutGroup> ();
-		layoutGroup.childForceExpandHeight = false;
+        if (text == "forward") {
+            return currentDirection;
+        } else if (text == "back") {
+            return -currentDirection;
+        } else if (text == "left") {
+            Vector2 left = Vector2.Perpendicular(currentDirection);
+            return new Vector2Int((int) left.x, (int) left.y);
+        }
 
-		return choice;
-	}
+        Vector2 right = -Vector2.Perpendicular(currentDirection);
+        return new Vector2Int((int) right.x, (int) right.y);
+    }
 
-	// Destroys all the children of this gameobject (all the UI)
-	void RemoveChildren () {
-		int childCount = canvas.transform.childCount;
-		for (int i = childCount - 1; i >= 0; --i) {
-			GameObject.Destroy (canvas.transform.GetChild (i).gameObject);
-		}
-	}
-
-	[SerializeField]
-	private Canvas canvas = null;
-
-	// UI Prefabs
-	[SerializeField]
-	private Text textPrefab = null;
-	[SerializeField]
-	private Button buttonPrefab = null;
+    public void ProcessMove(Vector2Int direction) {
+        traveller.Move(direction);
+        UpdateStoryAtCurrentPosition();
+    }
 }
