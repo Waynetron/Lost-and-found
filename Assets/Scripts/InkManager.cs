@@ -38,6 +38,8 @@ public class InkManager : MonoBehaviour {
         Vector2Int rightVectorInt = -leftVectorInt;
         Vector2Int right = tileMapPosition + rightVectorInt;
 
+       
+
 		if(map.IsInMap(ahead)) {
 			UnityEngine.Tilemaps.TileBase aheadTile = map.getTile(ahead.x, ahead.y);
 			story.variablesState["aheadTile"] = aheadTile.name;
@@ -71,8 +73,11 @@ public class InkManager : MonoBehaviour {
             story.variablesState["backPassable"] = false;
         }
 
-    //    if (map.getTile()=="Tree")
-       //     traveller.RandomizeDirection();
+        if (map.getTile(tileMapPosition.x, tileMapPosition.y).name == "Forest")
+        {
+            if (Random.Range(0,4)==1)
+                traveller.RandomizeDirection();
+        }
         story.variablesState["badWeather"] = badWeather;
 
         UnityEngine.Tilemaps.TileBase travellerTile = map.getTile(tileMapPosition.x, tileMapPosition.y);
