@@ -106,6 +106,7 @@ public class InkManager : MonoBehaviour {
 
     // When we click the choice button, tell the story to choose that choice!
     void OnClickChoiceButton(Choice choice) {
+        chatManager.ClearDialogue();
         chatManager.AddDialogue(choice.text.Trim(), Character.Player);
         ProcessMove(TextToDirection(choice.text, traveller.direction));
 		story.ChooseChoiceIndex (choice.index);

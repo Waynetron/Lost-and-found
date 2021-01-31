@@ -41,6 +41,13 @@ public class ChatManager : MonoBehaviour {
         choiceButtons.Clear();
     }
 
+    public void ClearDialogue() {
+        foreach (GameObject entry in dialogueEntries) {
+            Destroy(entry);
+        }
+        dialogueEntries.Clear();
+    }
+
     GameObject CreateDialogue(string text, Character character) {
         GameObject dialogue = Instantiate(character == Character.Player ? playerDialogue : travellerDialogue);
         dialogue.transform.SetParent(dialogueCanvas.transform, false);
@@ -53,7 +60,7 @@ public class ChatManager : MonoBehaviour {
     }
 
     public void AddDialogue(String text, Character character) {
-        if (dialogueEntries.Count > 9) {
+        if (dialogueEntries.Count > 6) {
             GameObject oldest = dialogueEntries[0];
             Destroy(oldest);
             dialogueEntries.RemoveAt(0);

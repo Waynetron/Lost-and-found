@@ -164,8 +164,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemap: {fileID: 1839583039}
-  tileMapPosition: {x: 0, y: 0, z: 0}
-  direction: {x: 0, y: 0, z: 0}
+  tileMapPosition: {x: 0, y: 0}
+  direction: {x: 0, y: 0}
   canSeeAdjacent: 1
 --- !u!212 &227390148
 SpriteRenderer:
@@ -419,12 +419,12 @@ PrefabInstance:
     - target: {fileID: 5746340063885271266, guid: ef978dba55fd344659a1d6eb51f0cb9b,
         type: 3}
       propertyPath: m_Padding.m_Right
-      value: 100
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 5746340063885271266, guid: ef978dba55fd344659a1d6eb51f0cb9b,
         type: 3}
       propertyPath: m_Padding.m_Bottom
-      value: 100
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 5746340063965923282, guid: ef978dba55fd344659a1d6eb51f0cb9b,
         type: 3}
@@ -489,12 +489,22 @@ PrefabInstance:
     - target: {fileID: 5746340064021596529, guid: ef978dba55fd344659a1d6eb51f0cb9b,
         type: 3}
       propertyPath: m_Padding.m_Top
-      value: 100
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340064021596529, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_ChildAlignment
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5746340064021596529, guid: ef978dba55fd344659a1d6eb51f0cb9b,
         type: 3}
       propertyPath: m_Padding.m_Right
-      value: 100
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 5746340064021596529, guid: ef978dba55fd344659a1d6eb51f0cb9b,
+        type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: 400
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef978dba55fd344659a1d6eb51f0cb9b, type: 3}
