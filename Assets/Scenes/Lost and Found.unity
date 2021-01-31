@@ -652,7 +652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 392512596}
-  tileJSON: {fileID: 0}
+  tileJSON: {fileID: 4900000, guid: 14aae99ed5a4c46419f1d34c090b15a3, type: 3}
   chatManager: {fileID: 188798399}
   map: {fileID: 431635386}
   traveller: {fileID: 227390147}
