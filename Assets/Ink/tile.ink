@@ -1,5 +1,6 @@
 VAR currentTile = "none"
 VAR aheadTile = "none"
+VAR backTile = "none"
 VAR leftTile = "none"
 VAR rightTile = "none"
 
@@ -12,7 +13,7 @@ VAR backPassable = true
 
 ==tile_description
 {currentTile=="EndTower":->endGame}
-{tile_description} I'm in a {currentTile}.{aheadPassable: North is {aheadTile}.} {leftPassable: West is a {leftTile}.}{rightPassable: To the east is a {rightTile}.}
+{tile_description} I'm in a {currentTile}.{aheadPassable: North is {aheadTile}.} {leftPassable: West is a {leftTile}.}{rightPassable: To the east is a {rightTile}.}{backPassable: South is a {backTile}.}
 + {aheadPassable}[NORTH]
 + {backPassable}[SOUTH]
 + {rightPassable}[EAST]

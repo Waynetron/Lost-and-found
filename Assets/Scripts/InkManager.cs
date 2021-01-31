@@ -25,9 +25,9 @@ public class InkManager : MonoBehaviour
 	public void SetTileContext(Map map, int x, int y)
     {
 		UnityEngine.Tilemaps.TileBase travellerTile = map.getTile(x,y);
-		if(map.IsInMap(x, y - 1))
+		if(map.IsInMap(x, y + 1))
 		{
-			UnityEngine.Tilemaps.TileBase aheadTile = map.getTile(x,y - 1);
+			UnityEngine.Tilemaps.TileBase aheadTile = map.getTile(x,y + 1);
 			story.variablesState["aheadTile"] = aheadTile.name;
 			story.variablesState["aheadPassable"] = true;
 		}
@@ -55,8 +55,12 @@ public class InkManager : MonoBehaviour
 		{
 			story.variablesState["rightPassable"] = false;
 		}
-		if(map.IsInMap(x, y + 1))
+		if(map.IsInMap(x, y - 1))
+		{
+			UnityEngine.Tilemaps.TileBase backTile = map.getTile(x,y - 1);
+			story.variablesState["backTile"] = backTile.name;
 			story.variablesState["backPassable"] = true;
+		}
 		else
 			story.variablesState["backPassable"] = false;
         story.variablesState["currentTile"] = travellerTile.name;
@@ -110,10 +114,10 @@ public class InkManager : MonoBehaviour
         switch(move)
         {
             case "NORTH":
-            yChange = -1;
+            yChange = 1;
             break;
             case "SOUTH":
-            yChange = 1;
+            yChange = -1;
             break;
             case "EAST":
             xChange = 1;

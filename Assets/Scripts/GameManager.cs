@@ -11,25 +11,19 @@ public class GameManager : MonoBehaviour
     Map map;
 
     [SerializeField]
-    int travellerX;
-
-    [SerializeField]
-    int travellerY;
+    Traveller traveller;
     
     // Start is called before the first frame update
     void Start()
     {
-        travellerX = 13;//Random.Range(0, map.tiles.Length);
-        travellerY = 10;//Random.Range(0, map.tiles[0].Length);
-
-        inkManager.SetTileContext(map, travellerX, travellerY);
+        traveller.SetPosition(13,10);
+        inkManager.SetTileContext(map, traveller.GetPosition().x, traveller.GetPosition().y);
         inkManager.StartStory();
     }
 
     public void Move(int x, int y)
     {
-        travellerX = travellerX + x;
-        travellerY = travellerY + y;
-        inkManager.SetTileContext(map, travellerX, travellerY);
+        traveller.Move(x,y);
+        inkManager.SetTileContext(map, traveller.GetPosition().x, traveller.GetPosition().y);
     }
 }
