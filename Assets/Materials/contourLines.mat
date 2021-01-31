@@ -78,10 +78,10 @@ Material:
     - _Waterheight: 5
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.56924176, g: 0.74868643, b: 0.9811321, a: 1}
+    - _BaseColor: {r: 0.7513479, g: 0.60595405, b: 0.8396226, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LineColor: {r: 0.17853329, g: 0.2681416, b: 0.6415094, a: 1}
-    - _LineColor2: {r: 0.38875046, g: 0.4849198, b: 0.9056604, a: 1}
+    - _LineColor: {r: 0.44639853, g: 0.31149876, b: 0.5283019, a: 1}
+    - _LineColor2: {r: 0.6322594, g: 0.46164113, b: 0.735849, a: 1}
     - _LineColor3: {r: 1, g: 1, b: 1, a: 1}
     - _Sea: {r: 0, g: 0, b: 0, a: 1}
