@@ -51,6 +51,25 @@ public class Map : MonoBehaviour
         }
     }
 
+    private Vector3Int findGoalLocation()
+    {
+        for(int x = tilemap.cellBounds.min.x; x< tilemap.cellBounds.max.x;x++)
+        {
+            for(int y= tilemap.cellBounds.min.y; y< tilemap.cellBounds.max.y;y++)
+            {
+                for(int z= tilemap.cellBounds.min.z;z< tilemap.cellBounds.max.z;z++)
+                {
+                    UnityEngine.Tilemaps.TileBase tileBase = tilemap.GetTile( new Vector3Int(x,y,z));
+                    if(tileBase != null && tileBase.name == "Goal")
+                    {
+                        return new Vector3Int(x,y,z); 
+                    }
+                }
+            }
+        }
+        return new Vector3Int(-1, -1, -1);
+    }
+
     void Update()
     {
         
