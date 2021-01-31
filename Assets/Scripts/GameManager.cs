@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        travellerX = Random.Range(0, map.tiles.Length);
-        travellerY = Random.Range(0, map.tiles[0].Length);
+        travellerX = 13;//Random.Range(0, map.tiles.Length);
+        travellerY = 10;//Random.Range(0, map.tiles[0].Length);
 
         inkManager.SetTileContext(map, travellerX, travellerY);
         inkManager.StartStory();

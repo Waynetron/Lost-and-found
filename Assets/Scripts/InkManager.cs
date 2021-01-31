@@ -24,11 +24,11 @@ public class InkManager : MonoBehaviour
 	
 	public void SetTileContext(Map map, int x, int y)
     {
-		Tile travellerTile = map.getTile(x,y);
+		UnityEngine.Tilemaps.TileBase travellerTile = map.getTile(x,y);
 		if(map.IsInMap(x, y - 1))
 		{
-			Tile aheadTile = map.getTile(x,y - 1);
-			story.variablesState["aheadTile"] = aheadTile.tileType.ToString();
+			UnityEngine.Tilemaps.TileBase aheadTile = map.getTile(x,y - 1);
+			story.variablesState["aheadTile"] = aheadTile.name;
 			story.variablesState["aheadPassable"] = true;
 		}
 		else
@@ -37,8 +37,8 @@ public class InkManager : MonoBehaviour
 		}
 		if(map.IsInMap(x - 1, y))
 		{
-			Tile leftTile = map.getTile(x - 1,y);
-			story.variablesState["leftTile"] = leftTile.tileType.ToString();
+			UnityEngine.Tilemaps.TileBase leftTile = map.getTile(x - 1,y);
+			story.variablesState["leftTile"] = leftTile.name;
 			story.variablesState["leftPassable"] = true;
 		}
 		else
@@ -47,8 +47,8 @@ public class InkManager : MonoBehaviour
 		}
 		if(map.IsInMap(x + 1, y))
 		{
-			Tile rightTile = map.getTile(x + 1,y);
-			story.variablesState["rightTile"] = rightTile.tileType.ToString();
+			UnityEngine.Tilemaps.TileBase rightTile = map.getTile(x + 1,y);
+			story.variablesState["rightTile"] = rightTile.name;
 			story.variablesState["rightPassable"] = true;
 		}
 		else
@@ -59,7 +59,7 @@ public class InkManager : MonoBehaviour
 			story.variablesState["backPassable"] = true;
 		else
 			story.variablesState["backPassable"] = false;
-        story.variablesState["currentTile"] = travellerTile.tileType.ToString();
+        story.variablesState["currentTile"] = travellerTile.name;
     }
 
     public void StartStory()
