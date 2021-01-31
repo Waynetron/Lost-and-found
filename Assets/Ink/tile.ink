@@ -12,7 +12,7 @@ VAR backPassable = true
 -> tile_description
 
 ==tile_description
-{currentTile=="EndTower":->endGame}
+{currentTile=="Goal":->endGame}
 {tile_description} I'm in a {currentTile}.{aheadPassable: North is {aheadTile}.} {leftPassable: West is a {leftTile}.}{rightPassable: To the east is a {rightTile}.}{backPassable: South is a {backTile}.}
 + {aheadPassable}[NORTH]
 + {backPassable}[SOUTH]
