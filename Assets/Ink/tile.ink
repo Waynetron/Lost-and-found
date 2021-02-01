@@ -26,6 +26,8 @@ I'm standing in a forest.
 ~ temp disoriented_roll = RANDOM(1, 5)
 {disoriented_roll == 1:
   All the trees are starting to look the same. I'm not even sure which direction I'm facing anymore. # disoriented
+- else:
+{&The growth here is so thick, it almost entirely blocks out light. Really struggling to see.|The flora here is so dense, it's pretty much impossible to see whats up ahead.}
 }
 -> movement_choices
 
