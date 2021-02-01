@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Lost and Found.unity
+    guid: 03f8294ea10a3441cb3a9ccf22a29ad6
   m_configObjects: {}
