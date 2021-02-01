@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         traveller.SetPosition(13,10);
-        inkManager.UpdateStoryAtCurrentPosition();
         inkManager.StartStory();
     }
 }

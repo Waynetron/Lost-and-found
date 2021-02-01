@@ -26,17 +26,10 @@ public class InkManager : MonoBehaviour {
         story = new Story(tileJSON.text);
     }
 
-    public void UpdateStoryAtCurrentPosition() {
+    public void UpdateStoryVariables() {
         Vector2Int tileMapPosition = traveller.GetTileMapPosition();
         Vector2Int ahead = tileMapPosition + traveller.direction;
         Vector2Int behind = tileMapPosition - traveller.direction;
-
-
-        if (map.getTile(tileMapPosition.x, tileMapPosition.y).name == "Forest")
-        {            
-            if (Random.Range(0, 4) == 1)
-                traveller.RandomizeDirection();
-        }
 
         Vector2 leftVector = Vector2.Perpendicular(traveller.direction);
         Vector2Int leftVectorInt = new Vector2Int((int) leftVector.x, (int) leftVector.y);
@@ -88,6 +81,7 @@ public class InkManager : MonoBehaviour {
     }
 
     public void StartStory() {
+        UpdateStoryVariables();
         StartCoroutine(ContinueStory(0));
     }
 
@@ -96,7 +90,12 @@ public class InkManager : MonoBehaviour {
 
         if (story.canContinue) {
             string text = story.Continue();
+            
             chatManager.AddDialogue(text.Trim(), Character.Traveller);
+
+            if (story.currentTags.Contains("disoriented")) {
+                traveller.RandomizeDirection();
+            }
 
             // recursively continue the story until all dialogue has been displayed
             StartCoroutine(ContinueStory(0.25f));
@@ -125,7 +124,8 @@ public class InkManager : MonoBehaviour {
         chatManager.ClearChoices();
         chatManager.ClearDialogue();
         chatManager.AddDialogue(choice.text.Trim(), Character.Player);
-        ProcessMove(TextToDirection(choice.text, traveller.direction));
+        traveller.Move(TextToDirection(choice.text, traveller.direction));
+        UpdateStoryVariables();
 		story.ChooseChoiceIndex (choice.index);
         StartCoroutine(ContinueStory(0.25f));
     }
@@ -144,10 +144,5 @@ public class InkManager : MonoBehaviour {
 
         Vector2 right = -Vector2.Perpendicular(currentDirection);
         return new Vector2Int((int) right.x, (int) right.y);
-    }
-
-    public void ProcessMove(Vector2Int direction) {
-        traveller.Move(direction);
-        UpdateStoryAtCurrentPosition();
     }
 }
