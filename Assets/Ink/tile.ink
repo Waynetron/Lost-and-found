@@ -15,6 +15,8 @@ VAR badWeather = true
 
 === tile_description ===
 {currentTile=="Goal": -> endGame}
+// Only print the weather state after checking if we're reached the goal, we don't care if the weather is bad if we're at the exit
+{badWeather: The weather looks like it's had a turn for the worse.}
 {currentTile=="Forest": -> forest_tile}
 {tile_description} I'm in a {currentTile}.{aheadPassable: Ahead is {aheadTile}.} {leftPassable: To me left is a {leftTile}.}{rightPassable: To my right is a {rightTile}.}{backPassable: Behind me is a {backTile}.}
 -> movement_choices
