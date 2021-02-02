@@ -91,6 +91,7 @@ public class InkManager : MonoBehaviour {
 
             if (story.currentTags.Contains("disoriented")) {
                 traveller.RandomizeDirection();
+                UpdateStoryVariables();
             }
 
             // recursively continue the story until all dialogue has been displayed
