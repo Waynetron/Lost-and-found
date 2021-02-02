@@ -20,7 +20,6 @@ public class InkManager : MonoBehaviour {
     private Traveller traveller;
 
     Story story;
-    public bool badWeather = false;
 
     void Awake() {
         story = new Story(tileJSON.text);
@@ -72,9 +71,6 @@ public class InkManager : MonoBehaviour {
 		} else {
             story.variablesState["backPassable"] = false;
         }
-
-      
-        story.variablesState["badWeather"] = badWeather;
 
         UnityEngine.Tilemaps.TileBase travellerTile = map.getTile(tileMapPosition.x, tileMapPosition.y);
         story.variablesState["currentTile"] = travellerTile.name;

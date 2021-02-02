@@ -17,9 +17,20 @@ VAR weatherIntensity = 0
 === turn_loop ===
     {currentTile=="Goal": -> endGame}
     <- weather
+    <- intro_text
     <- tile_description
     <- describe_surroundings
+    <- closing_text
     -> movement_choices
+
+
+=== intro_text ===
+    -> DONE
+
+
+=== closing_text ===
+    {&What should I do|What should I do next|Uh, what else}?
+    -> DONE
 
 
 === weather ===
@@ -53,6 +64,7 @@ VAR weatherIntensity = 0
     }
     -> DONE
 
+
 === forest_tile ===
     I'm standing in a forest.
     ~ temp disoriented_roll = RANDOM(1, 5)
@@ -60,7 +72,7 @@ VAR weatherIntensity = 0
         - disoriented_roll == 1:
             All the trees are starting to look the same. I'm not even sure which direction I'm facing anymore. # disoriented
         - else:
-            { &The growth here is so thick, it almost entirely blocks out light. Really struggling to see.|The flora here is so dense, it's pretty much impossible to see whats up ahead. }
+            {&The growth here is so thick, it almost entirely blocks out light. Really struggling to see.|The flora here is so dense, it's pretty much impossible to see whats up ahead.}
     }
     -> DONE
 
