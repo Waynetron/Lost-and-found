@@ -13,6 +13,9 @@ public class InkManager : MonoBehaviour {
     
     [SerializeField]
     private ChatManager chatManager;
+
+    [SerializeField]
+    WeatherEffects weatherEffects;
     
     [SerializeField]
     private Map map;
@@ -24,6 +27,10 @@ public class InkManager : MonoBehaviour {
 
     void Awake() {
         story = new Story(tileJSON.text);
+        story.ObserveVariable("stormRemaining", (string varName, object newValue) =>
+        {
+            weatherEffects.updateWeatherState(newValue);
+        });
     }
 
     public void UpdateStoryVariables() {
@@ -37,21 +44,6 @@ public class InkManager : MonoBehaviour {
 
         Vector2Int rightVectorInt = -leftVectorInt;
         Vector2Int right = tileMapPosition + rightVectorInt;        
-
-        if (story.variablesState["stormRemaining"].ToString() != "0")
-        {
-            Camera.main.GetComponent<Kino.AnalogGlitch>().scanLineJitter = 0.4f;
-            Camera.main.GetComponent<Kino.AnalogGlitch>().verticalJump = 0.01f;
-            Camera.main.GetComponent<Kino.AnalogGlitch>().horizontalShake = 0f;
-            Camera.main.GetComponent<Kino.AnalogGlitch>().colorDrift = 0.03f;
-        }
-        else
-        {
-            Camera.main.GetComponent<Kino.AnalogGlitch>().scanLineJitter = 0.004f;
-            Camera.main.GetComponent<Kino.AnalogGlitch>().verticalJump = 0.006f;
-            Camera.main.GetComponent<Kino.AnalogGlitch>().horizontalShake = 0f;
-            Camera.main.GetComponent<Kino.AnalogGlitch>().colorDrift = 0f;
-        }
 
 		if(map.IsInMap(ahead)) {
 			TileBase aheadTile = map.getTile(ahead.x, ahead.y);
