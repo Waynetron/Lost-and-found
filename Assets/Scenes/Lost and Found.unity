@@ -542,7 +542,6 @@ MonoBehaviour:
   chatManager: {fileID: 188798399}
   map: {fileID: 431635386}
   traveller: {fileID: 227390147}
-  badWeather: 0
 --- !u!4 &1044733027
 Transform:
   m_ObjectHideFlags: 0
@@ -8690,10 +8689,59 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1785913844, guid: 41582424b3f8ca54f8e8be28330abd98, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 397
+      objectReference: {fileID: 0}
     - target: {fileID: 4866456773378813109, guid: 41582424b3f8ca54f8e8be28330abd98,
         type: 3}
       propertyPath: m_Name
       value: MAP
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109256905180387876, guid: 41582424b3f8ca54f8e8be28330abd98,
+        type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109256905180387876, guid: 41582424b3f8ca54f8e8be28330abd98,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.0754717
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109256905180387876, guid: 41582424b3f8ca54f8e8be28330abd98,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.04808719
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109256905180387876, guid: 41582424b3f8ca54f8e8be28330abd98,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.03987184
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109256905180387883, guid: 41582424b3f8ca54f8e8be28330abd98,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109256905180387883, guid: 41582424b3f8ca54f8e8be28330abd98,
+        type: 3}
+      propertyPath: _colorDrift
+      value: 0.014
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109256905180387883, guid: 41582424b3f8ca54f8e8be28330abd98,
+        type: 3}
+      propertyPath: _verticalJump
+      value: 0.006
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109256905180387883, guid: 41582424b3f8ca54f8e8be28330abd98,
+        type: 3}
+      propertyPath: _scanLineJitter
+      value: 0.004
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109256905180387883, guid: 41582424b3f8ca54f8e8be28330abd98,
+        type: 3}
+      propertyPath: _horizontalShake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6755432441553180495, guid: 41582424b3f8ca54f8e8be28330abd98,
         type: 3}
