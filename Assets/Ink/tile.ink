@@ -58,6 +58,7 @@ VAR stormRemaining = 0
         - currentTile=="Plain": <- plain_tile
         - currentTile=="Swamp": <- swamp_tile
         - currentTile=="Rocky": <- rocky_tile
+        - currentTile=="River": <- river_tile
         - else: <- generic_tile
     }
     -> DONE
@@ -102,6 +103,16 @@ VAR stormRemaining = 0
 
 == rocky_tile ===
     {&The view from up here is incredible, I wish you could see it.|The rock here seems almost mettalic. It makes this odd chime when I clip it with my boot.}
+    -> DONE
+
+== river_tile ===
+    ~ temp swept_downstream_roll = RANDOM(1, 5)
+    {
+        - swept_downstream_roll == 1:
+            I got swept downstream. # swept_downstream
+        - else:
+            I managed to make it across. # crossed_river
+    }
     -> DONE
 
 

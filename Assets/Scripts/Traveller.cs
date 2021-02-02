@@ -47,10 +47,14 @@ public class Traveller : MonoBehaviour {
         UpdateGameObjectRotation();
     }
 
-    public void SetPosition(int x, int y) {
-        tileMapPosition.x = x;
-        tileMapPosition.y = y;
+    public void SetPosition(Vector2Int newPosition) {
+        tileMapPosition = newPosition;
         UpdateDisplayPosition();
+    }
+
+    public void SetDirection(Vector2Int newDirection) {
+        direction = newDirection;
+        UpdateGameObjectRotation();
     }
 
     private void UpdateDisplayPosition() {
