@@ -35,11 +35,24 @@ public class InkManager : MonoBehaviour {
         Vector2Int left = tileMapPosition + leftVectorInt;
 
         Vector2Int rightVectorInt = -leftVectorInt;
-        Vector2Int right = tileMapPosition + rightVectorInt;
+        Vector2Int right = tileMapPosition + rightVectorInt;        
 
-       
+        if (story.variablesState["stormRemaining"].ToString() != "0")
+        {
+            Camera.main.GetComponent<Kino.AnalogGlitch>().scanLineJitter = 0.4f;
+            Camera.main.GetComponent<Kino.AnalogGlitch>().verticalJump = 0.01f;
+            Camera.main.GetComponent<Kino.AnalogGlitch>().horizontalShake = 0f;
+            Camera.main.GetComponent<Kino.AnalogGlitch>().colorDrift = 0.03f;
+        }
+        else
+        {
+            Camera.main.GetComponent<Kino.AnalogGlitch>().scanLineJitter = 0.004f;
+            Camera.main.GetComponent<Kino.AnalogGlitch>().verticalJump = 0.006f;
+            Camera.main.GetComponent<Kino.AnalogGlitch>().horizontalShake = 0f;
+            Camera.main.GetComponent<Kino.AnalogGlitch>().colorDrift = 0f;
+        }
 
-		if(map.IsInMap(ahead)) {
+        if (map.IsInMap(ahead)) {
 			UnityEngine.Tilemaps.TileBase aheadTile = map.getTile(ahead.x, ahead.y);
 			story.variablesState["aheadTile"] = aheadTile.name;
 			story.variablesState["aheadPassable"] = map.IsPassable(aheadTile);
