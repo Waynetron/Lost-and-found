@@ -9,7 +9,7 @@ VAR leftPassable = true
 VAR rightPassable = true
 VAR backPassable = true
 
-VAR weatherIntensity = 0
+VAR stormRemaining = 0
 
 -> turn_loop
 
@@ -34,8 +34,21 @@ VAR weatherIntensity = 0
 
 
 === weather ===
-    ~ weatherIntensity = RANDOM(3, 5)
-    {weatherIntensity == 5: The weather looks like it's had a turn for the worse.}
+    {
+        - stormRemaining == 0:
+            {
+                // chance to start storm
+                - RANDOM(1, 6) == 6:
+                    The weather looks like it's taken a turn for the worse.
+                    // set random storm duration
+                    ~ stormRemaining = RANDOM(1, 3)
+            }
+        - stormRemaining == 1:
+            Looks like the storm is cleaning.
+            ~ stormRemaining--
+        - else:
+            ~ stormRemaining--
+    }
     -> DONE
 
 
@@ -52,7 +65,7 @@ VAR weatherIntensity = 0
 
 === describe_surroundings ===
     {
-        - weatherIntensity == 5:
+        - stormRemaining > 0:
             {&There's a cold thick fog|The fog is too thick|There is fog all around me}. I can't see ahead.
         - currentTile == "Forest":
             {&The forest is too dense|The trees are too dense}. I can't see ahead.
