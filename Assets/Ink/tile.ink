@@ -1,3 +1,4 @@
+VAR previousTile = 0
 VAR currentTile = "none"
 VAR aheadTile = 0
 VAR backTile = 0
@@ -122,6 +123,7 @@ VAR stormRemaining = 0
 
 
 === movement_choices ===
+    ~ previousTile = currentTile // set previous tile just before we move
     + {aheadPassable}[forward]
     + {backPassable}[back]
     + {rightPassable}[right]
