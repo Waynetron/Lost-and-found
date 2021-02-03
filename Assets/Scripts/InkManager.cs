@@ -231,8 +231,8 @@ public class InkManager : MonoBehaviour {
         // river crossing
         if (targetTile.name == "River") {
             // chance to be swept downstream 
-            // NOTE: Random.Range(1, 6) is equal to a 1 in 5 chance as the max value is exclusive.
-            if (Random.Range(1, 2) == 1) {
+            // NOTE: Random.Range(1, 5) is equal to a 1 in 4 chance as the max value is exclusive.
+            if (Random.Range(1, 5) == 1) {
                 // TODO: find a position downstream and set the traveller down there
                 DumpTravellerDownstream(targetPosition);
                 return "swept_downstream";
