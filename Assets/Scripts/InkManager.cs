@@ -126,7 +126,14 @@ public class InkManager : MonoBehaviour {
     void OnClickChoiceButton(Choice choice) {
         chatManager.ClearChoices();
         chatManager.ClearDialogue();
-        chatManager.AddDialogue(choice.text.Trim(), Character.Player);
+        // Remove direction arrows for chatbox version of choice
+        string trimmedText = choice.text.Trim();
+        if(trimmedText.StartsWith("↑") || trimmedText.StartsWith("↶") ||
+        trimmedText.StartsWith("↰") || trimmedText.StartsWith("↱"))
+        {
+            trimmedText = trimmedText.Substring(1);
+        }
+        chatManager.AddDialogue(trimmedText, Character.Player);
 
         string result = ProcessMovement(choice);
         if (result == "success") {
