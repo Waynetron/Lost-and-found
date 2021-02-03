@@ -106,15 +106,30 @@ VAR stormRemaining = 0
     {&The view from up here is incredible, I wish you could see it.|The rock here seems almost mettalic. It makes this odd chime when I clip it with my boot.}
     -> DONE
 
+
 == river_tile ===
-    ~ temp swept_downstream_roll = RANDOM(1, 5)
-    {
-        - swept_downstream_roll == 1:
-            I got swept downstream. # swept_downstream
-        - else:
-            I managed to make it across. # crossed_river
-    }
+    I am standing in the river.
     -> DONE
+
+
+== success_crossed_river ===
+    I managed to cross the river.
+    -> turn_loop
+
+
+== swept_downstream ===
+    I got swept downstream.
+    -> turn_loop
+
+
+== failed_river_crossing ===
+    I crossed the river, but couldn't find a way forward. So I turned around and headed back.
+    -> turn_loop
+
+
+== failed_movement ===
+    The terrain was too treacherous. So I turned around and headed back.
+    -> turn_loop
 
 
 == generic_tile ===
@@ -124,14 +139,22 @@ VAR stormRemaining = 0
 
 === movement_choices ===
     ~ previousTile = currentTile // set previous tile just before we move
-    + {aheadPassable}[forward]
-    + {backPassable}[back]
-    + {rightPassable}[right]
-    + {leftPassable}[left]
+
+    +	{ aheadTile == "River" } 	[↑ Continue forward and cross the river]
+    + 	{ aheadTile != "River" 	 } 		[↑ Continue forward]
+    
+    +	{ backTile == "River" } 	[↶ Turn around and cross the river]
+    + 	{ backTile != "River" 	 } 		[↶ Turn around and go back]
+    
+    +	{ leftTile == "River" } 	[↰ Cross the river to your left]
+    + 	{ leftTile != "River" 	 } 		[↰ Go to your left]
+    
+    +	{ rightTile == "River" } 	[↱ Cross the river to your right]
+    + 	{ rightTile != "River" 	 } 		[↱ Go to your right]
     -
     -> turn_loop
 
 
 === endGame ===
     I've reached you!
-    ->END
+    -> END

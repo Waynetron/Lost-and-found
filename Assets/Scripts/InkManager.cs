@@ -100,22 +100,6 @@ public class InkManager : MonoBehaviour {
                 UpdateStoryVariables();
             }
 
-            if (story.currentTags.Contains("swept_downstream")) {
-                //
-            }
-
-            if (story.currentTags.Contains("crossed_river")) {
-                Vector2Int oppositeRiverBank = traveller.GetTileMapPosition() + traveller.direction;
-                TileBase oppositeRiverBankTile = map.getTile(oppositeRiverBank.x, oppositeRiverBank.y);
-                
-                if (map.IsPassable(oppositeRiverBankTile)) {
-                    traveller.Move(traveller.direction);
-                } else {
-                    traveller.Move(-traveller.direction);
-                    UpdateStoryVariables();
-                }
-            }
-
             // recursively continue the story until all dialogue has been displayed
             StartCoroutine(ContinueStory(0.25f));
         }
@@ -143,20 +127,160 @@ public class InkManager : MonoBehaviour {
         chatManager.ClearChoices();
         chatManager.ClearDialogue();
         chatManager.AddDialogue(choice.text.Trim(), Character.Player);
-        traveller.Move(TextToDirection(choice.text, traveller.direction));
+
+        string result = ProcessMovement(choice);
+        if (result == "success") {
+            story.ChooseChoiceIndex(choice.index);
+        }
+        if (result == "swept_downstream") {
+            story.ChoosePathString("swept_downstream");
+        }
+        else if (result == "success_crossed_river") {
+            story.ChoosePathString("success_crossed_river");
+        }
+        else if (result == "failed_river_crossing") {
+            story.ChoosePathString("failed_river_crossing");
+        }
+        else if (result == "failed_movement") {
+            story.ChoosePathString("failed_movement");
+        }
+
         UpdateStoryVariables();
-		story.ChooseChoiceIndex (choice.index);
         StartCoroutine(ContinueStory(0.25f));
     }
 
-    Vector2Int TextToDirection(string text, Vector2Int currentDirection) {
-        Vector2 direction = new Vector2(currentDirection.x, currentDirection.y);
+    List<Vector2Int> GetAdjacentPositions(Vector2Int position) {
+        return new List<Vector2Int>() {
+            new Vector2Int(position.x + 1, position.y),
+            new Vector2Int(position.x - 1, position.y),
+            new Vector2Int(position.x, position.y + 1),
+            new Vector2Int(position.x, position.y - 1),
+        };
+    }
 
-        if (text == "forward") {
+    // Returns a list of all river tile positions connected to the given river tile position
+    // Looks only in a single direction (does not turn corners)
+    List<Vector2Int> FindConnectedRiverPositions(Vector2Int position, List<Vector2Int> currentPositions, Vector2Int direction) {
+        TileBase tile = map.getTile(position.x, position.y);
+        if (tile.name == "River") {
+            currentPositions.Add(position);
+            Vector2Int nextPosition = position + direction;
+            return FindConnectedRiverPositions(nextPosition, currentPositions, direction);
+        } else {
+            return currentPositions;
+        }
+    }
+
+    // Takes as input a list of river tile positions.
+    // From that list, returns any adjacent tile positions where the traveller could be potentially washed ashore.
+    List<Vector2Int> FindAdjacentRiverBankPositions(List<Vector2Int> riverPositions) {
+        List<Vector2Int> riverBanks = new List<Vector2Int>();
+
+        foreach (Vector2Int riverPosition in riverPositions) {
+            foreach (Vector2Int adjacent in GetAdjacentPositions(riverPosition)) {
+                TileBase tile = map.getTile(adjacent.x, adjacent.y);
+                if (map.IsInMap(adjacent) && map.IsPassable(tile) && tile.name != "River") {
+                    riverBanks.Add(adjacent);
+                }
+            }
+        }
+
+        return riverBanks;
+    }
+
+    // Dumps the traveller somewhere down river
+    void DumpTravellerDownstream(Vector2Int riverPosition) {
+        List <Vector2Int> diagonals = new List<Vector2Int>() {
+            new Vector2Int(1, 1),
+            new Vector2Int(-1, 1),
+            new Vector2Int(1, -1),
+            new Vector2Int(-1, -1),
+        };
+
+        List<Vector2Int> connectedRiverPositions = new List<Vector2Int>();
+        foreach (Vector2Int direction in diagonals) {
+            List<Vector2Int> riversInDirection = FindConnectedRiverPositions(riverPosition, new List<Vector2Int>(), direction);
+            connectedRiverPositions.AddRange(riversInDirection);
+        }
+
+        List<Vector2Int> riverBankPositions = FindAdjacentRiverBankPositions(connectedRiverPositions);
+
+        // remove current position from potential river bank positions
+        riverBankPositions.FindAll((Vector2Int position) => position.Equals(riverPosition));
+
+        // from the remaining river bank positions, choose one at random
+        // if for some reason there are no valid positions remaining, then the traveller remains in place
+        int randomIndex = Random.Range(0, riverBankPositions.Count - 1);
+        if (riverBankPositions.Count > 0) {
+            traveller.SetPosition(riverBankPositions[randomIndex]);
+        }
+        traveller.RandomizeDirection();
+    }
+
+    string ProcessMovement(Choice choice) {
+        Vector2Int direction = GetDirectionFromChoiceText(choice.text);
+        Vector2Int targetPosition = traveller.GetTileMapPosition() + direction;
+        TileBase targetTile = map.getTile(targetPosition.x, targetPosition.y);
+
+        // impassable terrain
+        if (!map.IsPassable(targetTile)) {
+            traveller.SetDirection(-direction);
+            return "failed_movement";
+        }
+
+        // river crossing
+        if (targetTile.name == "River") {
+            // chance to be swept downstream 
+            // NOTE: Random.Range(1, 6) is equal to a 1 in 5 chance as the max value is exclusive.
+            if (Random.Range(1, 2) == 1) {
+                // TODO: find a position downstream and set the traveller down there
+                DumpTravellerDownstream(targetPosition);
+                return "swept_downstream";
+            }
+
+            Vector2Int oppositeRiverBank = targetPosition + direction;
+            TileBase oppositeRiverBankTile = map.getTile(oppositeRiverBank.x, oppositeRiverBank.y);
+            
+            // other side of the river is blocked by impassable terrain
+            if (!map.IsPassable(oppositeRiverBankTile)) {
+                traveller.SetDirection(-direction);
+                return "failed_river_crossing";
+            }
+
+            // crossed the river
+            traveller.SetPosition(oppositeRiverBank);
+            return "success_crossed_river";
+        }
+
+        // standard move
+        traveller.Move(direction);
+        return "success";
+    }
+
+    Vector2Int GetDestinationChoiceText(string choiceText) {
+        Vector2Int currentDirection = traveller.direction;
+
+        if (choiceText.Contains("↑")) {
             return currentDirection;
-        } else if (text == "back") {
+        } else if (choiceText.Contains("↶")) {
             return -currentDirection;
-        } else if (text == "left") {
+        } else if (choiceText.Contains("↰")) {
+            Vector2 left = Vector2.Perpendicular(currentDirection);
+            return new Vector2Int((int) left.x, (int) left.y);
+        }
+
+        Vector2 right = -Vector2.Perpendicular(currentDirection);
+        return new Vector2Int((int) right.x, (int) right.y);
+    }
+
+    Vector2Int GetDirectionFromChoiceText(string choiceText) {
+        Vector2Int currentDirection = traveller.direction;
+
+        if (choiceText.Contains("↑")) {
+            return currentDirection;
+        } else if (choiceText.Contains("↶")) {
+            return -currentDirection;
+        } else if (choiceText.Contains("↰")) {
             Vector2 left = Vector2.Perpendicular(currentDirection);
             return new Vector2Int((int) left.x, (int) left.y);
         }
