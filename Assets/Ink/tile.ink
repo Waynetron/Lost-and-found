@@ -72,10 +72,10 @@ VAR stormRemaining = 0
         - currentTile == "Forest":
             {&The forest is too dense|The trees are too dense}. I can't see ahead.
         - else:
-            {aheadPassable: {&Up ahead|Straight ahead|In front of me} is a {aheadTile}.}
-            {leftPassable: {&To my left is|On my left is|Left I can see} a {leftTile}.}
-            {rightPassable: {&To my right|On my right} is a {rightTile}.}
-            {backPassable: Behind me is a {backTile}.}
+            {aheadTile: {&Up ahead|Straight ahead|In front of me} is a {aheadTile}.}
+            {leftTile: {&To my left is|On my left is|Left I can see} a {leftTile}.}
+            {rightTile: {&To my right|On my right} is a {rightTile}.}
+            {backTile: Behind me is a {backTile}.}
     }
     -> DONE
 
