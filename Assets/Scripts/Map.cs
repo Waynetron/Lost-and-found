@@ -51,7 +51,7 @@ public class Map : MonoBehaviour
         }
     }
 
-    private Vector3Int findGoalLocation()
+    public Vector3Int findGoalLocation()
     {
         for(int x = tilemap.cellBounds.min.x; x< tilemap.cellBounds.max.x;x++)
         {

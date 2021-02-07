@@ -25,12 +25,16 @@ public class InkManager : MonoBehaviour {
 
     Story story;
 
+    private Vector3Int goalLocation;
+
     void Awake() {
         story = new Story(tileJSON.text);
         story.ObserveVariable("stormRemaining", (string varName, object newValue) =>
         {
             weatherEffects.updateWeatherState(newValue);
         });
+        goalLocation = map.findGoalLocation();
+        Debug.Log(goalLocation);
     }
 
     public void UpdateStoryVariables() {
@@ -80,6 +84,11 @@ public class InkManager : MonoBehaviour {
 
         TileBase travellerTile = map.getTile(tileMapPosition.x, tileMapPosition.y);
         story.variablesState["currentTile"] = travellerTile.name;
+
+        int xTileDistance = Mathf.Abs(tileMapPosition.x - goalLocation.x);
+        int yTileDistance = Mathf.Abs(tileMapPosition.y - goalLocation.y);
+        int tileDistance = xTileDistance + yTileDistance;
+        story.variablesState["tileDistance"] = tileDistance;
     }
 
     public void StartStory() {

@@ -12,6 +12,8 @@ VAR backPassable = true
 
 VAR stormRemaining = 0
 
+VAR tileDistance = -1
+
 -> turn_loop
 
 
