@@ -105,7 +105,10 @@ VAR tileDistance = -1
 
 
 == rocky_tile ===
-    {&The view from up here is incredible, I wish you could see it.|The rock here seems almost mettalic. It makes this odd chime when I clip it with my boot.}
+    {&{
+    -stormRemaining == 0:The view from up here is incredible, I wish you could see it.
+    - else:I'm high up but I can't see a thing.
+    }|The rock here seems almost mettalic. It makes this odd chime when I clip it with my boot.}
     -> DONE
 
 
